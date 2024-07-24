@@ -1,10 +1,10 @@
 {
   description = "A Nix-flake-based sits development environment";
 
-    inputs = {
-        nixgl.url = "github:nix-community/nixGL";
-        nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
-    };
+  inputs = {
+    nixgl.url = "github:nix-community/nixGL";
+    nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+  };
 
   outputs = { self, nixpkgs, nixgl }:
     let
@@ -15,10 +15,9 @@
     in
     {
       overlays.default = final: prev: rec {
-        rEnv = final.rWrapper.override {
+        rEnv = final.rstudioWrapper.override {
           packages = with final.rPackages; [
             sits
-
             yaml
             dplyr
             gdalUtilities
@@ -34,7 +33,6 @@
             tibble
             tidyr
             torch
-
             aws_s3
             caret
             cli
@@ -72,7 +70,7 @@
             tmap
             torchopt
             xgboost
-            ];
+          ];
         };
       };
 
@@ -80,11 +78,10 @@
         default = pkgs.mkShell {
           packages = with pkgs;
             [
+              R
               rEnv
               pandoc
               gdal
-              rstudio
-              texlive.combined.scheme-full
               pkgs.nixgl.auto.nixGLDefault
             ];
         };
